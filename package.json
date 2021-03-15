@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "build": "node build.js",
+    "start": "node serve.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.9.2"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  }
+}

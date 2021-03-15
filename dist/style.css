@@ -1,0 +1,16 @@
+h2 {
+  margin: 0;
+}
+
+.component, .component .children {
+	padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.07);
+}
+
+.component .children {
+  display: flex;
+}
+
+.component .children > *:not(:last-child) {
+  margin-right: 0.5rem;
+}
