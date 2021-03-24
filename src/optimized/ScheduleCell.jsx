@@ -5,7 +5,7 @@ import { ShiftItem } from './ShiftItem';
 export function ScheduleCell(props) {
 	const {
 		shifts,
-		replaceShift,
+		shiftDispatch,
 		users,
 	} = props;
 
@@ -14,7 +14,7 @@ export function ScheduleCell(props) {
 			<ShiftItem
 				key={ shift.start.format('HH:mm') }
 				shift={ shift }
-				replaceShift={ replaceShift }
+				shiftDispatch={ shiftDispatch }
 				users={ users }
 			/>
 		) }

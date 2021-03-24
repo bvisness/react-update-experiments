@@ -30,33 +30,61 @@ const defaultShifts = [
 	new Shift(3, 'Server', '2021-03-04 10:00:00', '2021-03-04 17:00:00'),
 ];
 
-export function App() {
-	const [shifts, setShifts] = useState(defaultShifts);
-	const [sillyValue, setSillyValue] = useState('');
+function makeDefaultShiftState() {
+	const shiftsByUser = Object.fromEntries(users.map(user => [user.id, []]));
 
-	function replaceShift(originalShift, newShift) {
-		const newShifts = shifts.filter(shift => shift !== originalShift);
-		newShifts.push(newShift);
-		setShifts(newShifts);
-	}
-
-	const shiftsByUser = [];
-	for (const shift of shifts) {
-		if (!shiftsByUser[shift.userId]) {
-			shiftsByUser[shift.userId] = [];
-		}
+	for (const shift of defaultShifts) {
 		shiftsByUser[shift.userId].push(shift);
 	}
 
+	return {
+		shifts: defaultShifts,
+		shiftsByUser: shiftsByUser,
+	}
+}
+
+function shiftReducer(shiftState, action) {
+	switch (action.type) {
+		case 'replace': {
+			const {
+				shifts,
+				shiftsByUser,
+			} = shiftState;
+			const {
+				originalShift,
+				newShift,
+			} = action;
+
+			const newShifts = shifts.filter(shift => shift !== originalShift);
+			newShifts.push(newShift);
+
+			const newShiftsByUser = { ...shiftsByUser };
+			newShiftsByUser[originalShift.userId] = newShiftsByUser[originalShift.userId].filter(shift => shift !== originalShift);
+			newShiftsByUser[newShift.userId] = [...newShiftsByUser[newShift.userId], newShift];
+
+			return {
+				shifts: newShifts,
+				shiftsByUser: newShiftsByUser,
+			};
+		}
+		default:
+			throw new Error();
+	}
+}
+
+export function App() {
+	const [shiftState, shiftDispatch] = useReducer(shiftReducer, makeDefaultShiftState());
+	const [sillyValue, setSillyValue] = useState('');
+
 	const rows = [];
 	for (const user of users) {
-		const shifts = shiftsByUser[user.id] || [];
+		const shifts = shiftState.shiftsByUser[user.id];
 		rows.push(<ScheduleRow
 			key={ user.id }
 			user={ user }
 			shifts={ shifts }
 			startDate={ startDate }
-			replaceShift={ replaceShift }
+			shiftDispatch={ shiftDispatch }
 			users={ users }
 		/>);
 	}
