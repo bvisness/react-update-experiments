@@ -9,6 +9,10 @@ export function ScheduleCell(props) {
 		users,
 	} = props;
 
+	// pretend that rendering is expensive
+	const startMs = Date.now();
+	while (Date.now() - startMs < 2) {}
+
 	return <div className="schedule-cell">
 		{ shifts.map(shift => 
 			<ShiftItem
