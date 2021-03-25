@@ -1,25 +1,28 @@
 import React from 'react';
 
+import { deepEqual } from '../deepEqual';
 import { ShiftItem } from './ShiftItem';
 
-export function ScheduleCell(props) {
-	const {
-		shifts,
-		replaceShift,
-		users,
-	} = props;
+export class ScheduleCell extends React.Component {
+	render() {
+		const {
+			shifts,
+			replaceShift,
+			users,
+		} = this.props;
 
-	const startMs = Date.now();
-	while (Date.now() - startMs < 2) {}
+		const startMs = Date.now();
+		while (Date.now() - startMs < 2) {}
 
-	return <div className="schedule-cell">
-		{ shifts.map(shift => 
-			<ShiftItem
-				key={ shift.start.format('HH:mm') }
-				shift={ shift }
-				replaceShift={ replaceShift }
-				users={ users }
-			/>
-		) }
-	</div>;
+		return <div className="schedule-cell">
+			{ shifts.map(shift => 
+				<ShiftItem
+					key={ shift.start.format('HH:mm') }
+					shift={ shift }
+					replaceShift={ replaceShift }
+					users={ users }
+				/>
+			) }
+		</div>;
+	}
 }
