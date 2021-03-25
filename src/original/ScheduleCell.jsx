@@ -9,7 +9,6 @@ export function ScheduleCell(props) {
 		users,
 	} = props;
 
-	// pretend that rendering is expensive
 	const startMs = Date.now();
 	while (Date.now() - startMs < 2) {}
 
